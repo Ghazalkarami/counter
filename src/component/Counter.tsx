@@ -2,6 +2,13 @@ import { useState } from "react";
 
 function Counter() {
   const [number, setNumber] = useState<number>(0);
+  const buttonConfigurations = [
+    { label: "+", operation: "increase", disabled: false },
+    { label: "-", operation: "decrease", disabled: number <= 0 },
+    { label: "Reset", operation: "reset", disabled: false },
+    { label: "+10", operation: "plusTen", disabled: false },
+    { label: "-10", operation: "minusTen", disabled: number < 10 },
+  ];
 
   const handleOperation = (operation: string) => {
     switch (operation) {
@@ -33,21 +40,16 @@ function Counter() {
     <>
       <h2>{number}</h2>
       <div className="buttonContainer">
-        <button onClick={() => handleOperation("increase")}>+</button>
-        <button
-          onClick={() => handleOperation("decrease")}
-          style={{ backgroundColor: number <= 0 ? "darkgray" : "" }}
-        >
-          -
-        </button>
-        <button onClick={() => handleOperation("reset")}>Reset</button>
-        <button onClick={() => handleOperation("plusTen")}>+10</button>
-        <button
-          onClick={() => handleOperation("minusTen")}
-          style={{ backgroundColor: number < 10 ? "darkgray" : "" }}
-        >
-          -10
-        </button>
+        {buttonConfigurations.map((button) => (
+          <button
+            key={button.operation}
+            onClick={() => handleOperation(button.operation)}
+            style={{ backgroundColor: button.disabled ? "darkgray" : "" }}
+            disabled={button.disabled}
+          >
+            {button.label}
+          </button>
+        ))}
       </div>
     </>
   );
